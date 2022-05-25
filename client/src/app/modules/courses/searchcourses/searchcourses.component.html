@@ -1,0 +1,36 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="container" style="margin-left:-12px;">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <select class="form-select form-select-sm" formControlName="criteria" (change)="onChange($event)" style="display:inline;">
+                        <option [ngValue]="null" disabled>Search Courses</option>
+                        <option *ngFor="let category of filterCategories" [ngValue]="category.value">
+                            {{category.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-1" *ngIf="selectedCriteria == '2: fee' || selectedCriteria == '3: date'">
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm" placeholder="Min" formControlName="min" />
+                </div>
+            </div>
+            <div class="col-sm-1"  *ngIf="this.selectedCriteria == '2: fee' || selectedCriteria == '3: date'">
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm" placeholder="Max" formControlName="max" />
+                </div>
+            </div>
+            <div class="col-sm-3" *ngIf="selectedCriteria == '1: name'">
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search..." formControlName="value"/>
+                </div>
+            </div>
+            <div class="col-sm-2" *ngIf="selectedCriteria == '1: name' || this.selectedCriteria == '2: fee' || selectedCriteria == '3: date'">
+                <div class="form-group">
+                    <button class="btn btn-sm btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+/* Add application styles & imports to this file! */
+
+a { cursor: pointer }
+
+.app-container {
+    min-height: 320px;
+    overflow: hidden;
+    padding: 25px;
+
+}
+
+.form-group{
+    padding-top:8px;
+    padding-bottom:8px;
+}
+
+.form-group label {
+    font-weight: bold;
+    font-size:16px;
+}
+
+.card-header {
+    background-color: rgb(212, 228, 247);
+}

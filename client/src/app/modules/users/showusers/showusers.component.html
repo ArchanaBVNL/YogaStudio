@@ -1,0 +1,15 @@
+<h5>Users</h5>
+<div *ngIf="showAlert">
+  <!-- display alert if an api error occurs -->
+  <app-alert [type]="alertType" [message]="alertMessage"></app-alert>
+</div>
+<div class="card" *ngFor="let customer of customers; index as i" style="margin-bottom:10px;">
+    <div class="card-header">
+      {{customer.firstName}}, {{customer.lastName}}
+      <span style="float:right;font-size:16px;">
+        <button class="btn btn-sm btn-primary" (click)="getCustomerCourses(customer.userId)">Get Courses</button>
+      </span>
+    </div>
+    <div id="{{ 'card-body-' + customer.userId }}" class="card-body">
+    </div>
+</div>

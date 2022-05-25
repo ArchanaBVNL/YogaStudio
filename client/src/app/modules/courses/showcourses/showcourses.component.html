@@ -1,0 +1,143 @@
+  <h5>Courses</h5>
+  <div *ngIf="!isObjectEmpty(userData) && coursesFromCart?.length > 0">
+    <div class="accordion" id="accordionCartDetails">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccordionBody" aria-expanded="true" aria-controls="collapseOne">
+            Cart Details
+          </button>
+        </h2>
+        <div id="collapseAccordionBody" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionCartDetails">
+          <div class="accordion-body">
+            <div *ngFor="let course of coursesFromCart; last as isLast">
+              <div id="course-in-cart-{{course.courseId}}" class="container">
+                <div class="row">
+                  <div class="col-lg-6" style="text-align:left">
+                    <b>{{course.courseTitle}}</b>
+                  </div>
+                  <div class="col-lg-6" style="text-align:right">
+                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeCourseFromCart(course?.courseId)">Delete</button>
+                  </div>
+                </div>
+              </div>
+              <hr>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12" style="text-align:right">
+                  <button type="button" class="btn btn-sm btn-primary" (click)="confirmCourseEnrollment()">Confirm Enrollment</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+  </div>
+  <div *ngIf="showAlert">
+    <!--display alert message-->
+    <app-alert [type]="alertType" [message]="alertMessage"></app-alert>
+  </div>
+  <!--if a user searches courses using a criteria then display search results-->
+  <app-searchcourses (searchedCourses)="onReceivingSearchedCourses($event)"></app-searchcourses>
+  <div *ngIf="userType=='admin'" style="text-align:right;">
+    <button type="button" class="btn btn-primary btn-sm" routerLink="/courses/addcourse">Add Course</button>
+  </div>
+  <div class="row row-cols-2 row-cols-md-4 g-4" style="padding-top:25px;" *ngIf="courses?.length>0">
+    <div class="col"  *ngFor = "let course of courses">
+      <div class="card">
+        <img src="../assets/yoga-lotus.svg" class="card-img-top" alt="Yoga" style="width:100px;background-color:azure;">
+        <div class="card-body">
+          <h5 class="card-title">{{course.courseTitle}}</h5>
+          <h6 style="color:gray">{{course.courseLevel}}</h6>
+          <h6>Fee: $ {{course.courseFee | number:'1.2-2' }}</h6>
+          <p class="card-text">{{course.courseDescription}}</p>
+          <div *ngIf="userType=='customer' && course?.enrolled!==null">
+            <div *ngIf="userType=='customer' && !course?.enrolled && !course?.classFull" style="float:right;padding-left:10px;">
+              <button id="btn-{{course.courseId}}" type="button" class="btn btn-success btn-sm" (click)="enrollCourse(course?.courseId)">Enroll</button>
+            </div>
+            <div *ngIf="userType=='customer' && course?.enrolled" style="float:left;">
+              <button type="button" class="btn btn-danger btn-sm" (click)="showWithdrawModal(course?.courseId)">Withdraw</button>
+            </div>
+          </div>
+          <div *ngIf="userType=='customer' && course?.classFull" style="float:right;">
+            <span style="color:rgb(128, 68, 0); font-size:16px;">Course Full</span>
+          </div>
+          <div *ngIf="userType=='admin'" style="float:right">
+            <button type="button" class="btn btn-primary btn-sm" routerLink="/courses/editcourse/{{course.courseId}}">Edit</button>
+            <span style="padding-left:10px;"></span>
+            <button type="button" class="btn btn-danger btn-sm" (click)="showDeleteModal(course?.courseId)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="courses?.length == 0">
+      <h6>No courses found.</h6>
+  </div>
+  <div class="modal" tabindex="-1" [ngStyle]="{'display':displayDeleteModalStyle}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Course</h5>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this course?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" (click)="closeDeleteModal()">Cancel</button>
+          <button type="button" class="btn btn-sm btn-primary" (click)="deleteCourse(selectedCourseId)">Delete Course</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" [ngStyle]="{'display':displayMessageModalStyle}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Course</h5>
+        </div>
+        <div class="modal-body">
+          <p>{{message}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-primary" (click)="closeMessageModal()">Close</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" [ngStyle]="{'display':displayWithdrawModalStyle}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Withdraw Course</h5>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to withdraw from this course?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" (click)="closeWithdrawModal()">Cancel</button>
+          <button type="button" class="btn btn-sm btn-primary" (click)="withdrawCourse(selectedCourseId)">Withdraw</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" [ngStyle]="{'display':displayWithdrawMessageModalStyle}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Withdraw Course</h5>
+        </div>
+        <div class="modal-body">
+          <p>{{message}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-primary" (click)="closeWithdrawMessageModal()">Close</button>
+          </div>
+      </div>
+    </div>
+  </div>

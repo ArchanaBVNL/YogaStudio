@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Yoga Client</a>
+    <div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Courses</a>
+        </li>
+        <li class="nav-item" *ngIf="user?.userType == 'admin' && !isEmpty(user)">
+          <a class="nav-link" href="/users/showusers">Users</a>
+        </li>
+        <li class="nav-item" *ngIf="isEmpty(user)">
+          <a class="nav-link" routerLink="/registration/login">Login / Register</a>
+        </li>
+        <li class="nav-item" *ngIf="!isEmpty(user)">
+          <a class="nav-link" (click)="logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</nav>
+<!-- main app container -->
+<div class="app-container">
+  <!--all routes are loaded here-->
+  <router-outlet></router-outlet>
+</div>

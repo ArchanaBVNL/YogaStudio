@@ -1,0 +1,105 @@
+<div class="card" #editCourseCard>
+    <h6 class="card-header">Modify Course</h6>
+    <div class="card-body">
+        <div *ngIf="showAlert">
+            <app-alert [type]="alertType" [message]="alertMessage"></app-alert>
+        </div>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <input type="hidden" formControlName="courseId" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="courseTitle">Course Title</label>
+                <input type="text" formControlName="courseTitle" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.courseTitle.errors }" />
+                <div *ngIf="submitted && f.courseTitle.errors" class="invalid-feedback">
+                    <div *ngIf="f.courseTitle.errors.required">Course Title is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="courseLevel">Course Level</label><br>
+                <select formControlName="courseLevel">
+                    <option *ngFor="let level of courseLevels" [ngValue]="level" [selected]="courseDetails?.courseLevel === level">
+                        {{level}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="courseDescription">Course Description</label>
+                <input type="text" formControlName="courseDescription" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.courseDescription.errors }" />
+                <div *ngIf="submitted && f.courseDescription.errors" class="invalid-feedback">
+                    <div *ngIf="f.courseDescription.errors.required">Course description is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="courseFee">Course Fee</label>
+                <input type="text" formControlName="courseFee" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.courseFee.errors }" />
+                <div *ngIf="submitted && f.courseFee.errors" class="invalid-feedback">
+                    <div *ngIf="f.courseFee.errors.required">Course Fee is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="instructorId">Instructor</label><br>
+                <select formControlName="instructorId">
+                    <option *ngFor="let instructor of instructors" [ngValue]="instructor.userId" [selected]="courseDetails?.instructorId === instructor.userId">
+                        {{instructor.firstName + ',' + instructor.lastName}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="startDate">Start Date (YYYY-MM-DD)</label>
+                <input type="text" formControlName="startDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" />
+                <div *ngIf="submitted && f.startDate.errors" class="invalid-feedback">
+                    <div *ngIf="f.startDate.errors.required">Start Date is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date (YYYY-MM-DD)</label>
+                <input type="text" formControlName="endDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.endDate.errors }" />
+                <div *ngIf="submitted && f.endDate.errors" class="invalid-feedback">
+                    <div *ngIf="f.endDate.errors.required">End Date is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="startTime">Start Time (HH:MI)</label>
+                <input type="text" formControlName="startTime" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.startTime.errors }" />
+                <div *ngIf="submitted && f.startTime.errors" class="invalid-feedback">
+                    <div *ngIf="f.startTime.errors.required">Start Time is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="endTime">End Time (HH:MI)</label>
+                <input type="text" formControlName="endTime" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.endTime.errors }" />
+                <div *ngIf="submitted && f.endTime.errors" class="invalid-feedback">
+                    <div *ngIf="f.endTime.errors.required">End Time is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="frequency">Frequency</label><br>
+                <select formControlName="frequency">
+                    <option [ngValue]="null" disabled>Choose a Frequency</option>
+                    <option *ngFor="let cf of courseFrequency" [ngValue]="cf">
+                        {{cf}}
+                    </option>
+                </select>
+                <div *ngIf="submitted && f.frequency.errors" class="invalid-feedback" style="display:block">
+                    <div  *ngIf="f.frequency.errors.frequency">Course Frequency is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="studentLimit">Student Limit</label>
+                <input type="text" formControlName="studentLimit" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.studentLimit.errors }" />
+                <div *ngIf="submitted && f.studentLimit.errors" class="invalid-feedback">
+                    <div *ngIf="f.studentLimit.errors.required">Student Limit is required</div>
+                </div>
+            </div>
+            <div class="form-group" style="float:right">
+                <button [disabled]="loading" class="btn btn-sm btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Submit
+                </button>
+                <span style="padding-left:10px;"></span>
+                <button class="btn btn-sm btn-secondary" routerLink="/courses" >Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
